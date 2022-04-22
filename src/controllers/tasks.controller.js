@@ -2,7 +2,7 @@ const pool = require('../db')
 
 const getAllBooks = async (req,res) => {
     try {
-        const allBooks = await pool.query('SELECT * FROM libro')
+        const allBooks = await pool.query('SELECT libro.id_libro AS IdLibro,libro.titulo AS TituloLibro,libro.editorial AS EditorialLibro,libro.area AS AreaLibro,autor.nombre AS NombreAutor,autor.nacionalidad AS NacionalidadAutor FROM libro AS libro,libAut AS libAut,autor AS autor WHERE libro.id_libro =	libAut.id_libro AND   libAut.id_autor = autor.id_autor GROUP BY libro.id_libro, libro.titulo, libro.editorial, libro.area, autor.nombre, autor.nacionalidad ORDER BY idlibro')
         console.log(allBooks)
         return res.json(allBooks.rows)
     } catch (error) {
@@ -18,6 +18,7 @@ const getABook = async (req,res) => {
         if(book.rows.length === 0) return res.status(404).json({
             message: 'Book not Found'
         })
+        const example = [res.json(book.rows[0])]
         console.log(book)
         return res.json(book.rows[0])
     } catch (error) {
