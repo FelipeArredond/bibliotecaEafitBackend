@@ -75,6 +75,8 @@ const putABook = async (req,res) => {
     }
 }
 
+
+//REGISTRAR ESTUDIANTE
 const postAStudent = async (req,res) => {
     const { id_lector, nombre, edad, carrera, direccion, ci } = req.body
     
@@ -105,6 +107,18 @@ const getStudents = async (req,res) => {
     }
 }
 
+const getStudent = async (req,res) => {
+    const {ci} = req.params
+    try {
+        const student = await pool.query('SELECT * FROM estudiante WHERE ci = $1',[ci]);
+        console.log(student);
+        return res.json(student.rows);
+    }
+    catch(error){
+        console.log(error.message)
+    }
+}
+
 const postLendBook = async (req,res) => {
     const {id_libro, id_lector} = req.body
     try {
@@ -127,5 +141,6 @@ module.exports = {
     putABook: putABook,
     postAStudent: postAStudent,
     getStudents: getStudents,
+    getStudent:getStudent,
     postLendBook: postLendBook
 }
