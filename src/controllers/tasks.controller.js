@@ -96,6 +96,40 @@ const postAStudent = async (req,res) => {
     }
 }
 
+//Mostrar prestamos
+const getPrestamo = async (req,res) => {
+    try {
+        const listOFPrestamos = await pool.query('SELECT prestamo.id_prestamo, libro.titulo, estudiante.nombre, prestamo.fecha_prestamo, prestamo.fecha_devolucion, prestamo.devuelto, prestamo.multa FROM libro AS libro, prestamo AS prestamo, estudiante AS estudiante WHERE libro.id_libro = prestamo.id_libro AND prestamo.id_lector = estudiante.id_lector');
+        console.log(listOFPrestamos);
+        return res.json(listOFPrestamos.rows);
+    }
+    catch(error){
+        console.log(error.message)
+    }
+}
+
+//Actualizar prestamo
+const updatePrestamo = async (req, res) => {
+    try {
+        const { id_prestamo } = req.params
+        const { devuelto, multa } = req.body
+
+        const result = await pool.query('UPDATE prestamo SET devuelto = $1, multa = $2 WHERE id_prestamo = $3', [devuelto, multa, id_prestamo])
+        if (result.rowCount === 0) {
+            return res.status(404).json({
+                message: 'No encontrado'
+            })
+        }
+        console.log(result)
+        res.json(result.rows[0])
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
+
 const getStudents = async (req,res) => {
     try {
         const listOFStudents = await pool.query('SELECT * FROM estudiante');
@@ -142,5 +176,7 @@ module.exports = {
     postAStudent: postAStudent,
     getStudents: getStudents,
     getStudent:getStudent,
-    postLendBook: postLendBook
+    postLendBook: postLendBook,
+    getPrestamo: getPrestamo,
+    updatePrestamo : updatePrestamo
 }
