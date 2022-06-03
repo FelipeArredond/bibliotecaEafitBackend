@@ -154,15 +154,17 @@ const getStudent = async (req,res) => {
 }
 
 const postLendBook = async (req,res) => {
-    const {id_libro, id_lector} = req.body
+    const {id_prestamo,id_libro, id_lector} = req.body
     try {
-        const lendQuery = await pool.query('INSERT INTO prestamo (id_lector,id_libro, fecha_prestamo, fecha_devolucion, devuelto, multa) VALUES ($1,$2, now(), null, null, 0) RETURNING *',[
+        const lendQuery = await pool.query('INSERT INTO prestamo (id_prestamo, id_lector,id_libro, fecha_prestamo, fecha_devolucion, devuelto, multa) VALUES ($1,$2,$3, now(), null, null, 0) RETURNING *',[
+            id_prestamo,
             id_libro,
             id_lector
         ]);
         console.log(lendQuery);
         res.send('Publicando prestamo');
-    } catch (eroor) {
+    }
+    catch(error) {
         console.log(error.message)
     }
 }
