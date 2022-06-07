@@ -158,8 +158,8 @@ const postLendBook = async (req,res) => {
     try {
         const lendQuery = await pool.query('INSERT INTO prestamo (id_prestamo, id_lector,id_libro, fecha_prestamo, fecha_devolucion, devuelto, multa) VALUES ($1,$2,$3, now(), null, null, 0) RETURNING *',[
             id_prestamo,
-            id_libro,
-            id_lector
+            id_lector,
+            id_libro
         ]);
         console.log(lendQuery);
         res.send('Publicando prestamo');
