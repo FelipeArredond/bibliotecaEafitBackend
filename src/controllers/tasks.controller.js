@@ -97,9 +97,25 @@ const postAStudent = async (req,res) => {
 }
 
 //Mostrar prestamos
-const getPrestamo = async (req,res) => {
+
+const getPrestamos = async (req,res) => {
     try {
         const listOFPrestamos = await pool.query('SELECT prestamo.id_prestamo, libro.titulo, estudiante.nombre, prestamo.fecha_prestamo, prestamo.fecha_devolucion, prestamo.devuelto, prestamo.multa FROM libro AS libro, prestamo AS prestamo, estudiante AS estudiante WHERE libro.id_libro = prestamo.id_libro AND prestamo.id_lector = estudiante.id_lector');
+        console.log(listOFPrestamos);
+        return res.json(listOFPrestamos.rows);
+    }
+    catch(error){
+        console.log(error.message)
+    }
+}
+//Prestamos por estudiante
+
+const getPrestamo = async (req,res) => {
+    const { id_lector } = req.body
+    try {
+        const listOFPrestamos = await pool.query('SELECT prestamo.id_prestamo, libro.titulo, estudiante.nombre, prestamo.fecha_prestamo, prestamo.fecha_devolucion, prestamo.devuelto, prestamo.multa FROM libro AS libro, prestamo AS prestamo, estudiante AS estudiante WHERE libro.id_libro = prestamo.id_libro AND prestamo.id_lector = estudiante.id_lector AND estudiante.id_lector = $1::smallint',[
+            id_lector
+        ]);
         console.log(listOFPrestamos);
         return res.json(listOFPrestamos.rows);
     }
@@ -179,5 +195,6 @@ module.exports = {
     getStudent:getStudent,
     postLendBook: postLendBook,
     getPrestamo: getPrestamo,
+    getPrestamos: getPrestamos,
     updatePrestamo : updatePrestamo
 }

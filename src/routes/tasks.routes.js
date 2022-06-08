@@ -1,5 +1,5 @@
 const { Router } = require("express")
-const { getAllBooks, getABook, deleteABook, putABook, postABook, postAStudent, getStudents, postLendBook, getStudent, getPrestamo, updatePrestamo } = require('../controllers/tasks.controller')
+const { getAllBooks, getABook, deleteABook, putABook, postABook, postAStudent, getStudents, postLendBook, getStudent, getPrestamos, getPrestamo, updatePrestamo } = require('../controllers/tasks.controller')
 const pool = require('../db')
 
 
@@ -23,7 +23,9 @@ router.get('/estudiante/:ci', getStudent)
 
 router.post('/prestamo',postLendBook)
 
-router.get('/prestamo', getPrestamo)
+router.get('/prestamo', getPrestamos)
+
+router.put('/prestamosEstudiante', getPrestamo)
 
 router.put('/prestamo/:id_prestamo', updatePrestamo)
 
