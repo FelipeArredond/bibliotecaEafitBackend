@@ -27,6 +27,6 @@ router.get('/prestamo', getPrestamos)
 
 router.put('/prestamosEstudiante', getPrestamo)
 
-router.put('/prestamo/:id_prestamo', updatePrestamo)
+router.put('/prestamoUpdate/', updatePrestamo)
 
 module.exports = router;

@@ -127,10 +127,9 @@ const getPrestamo = async (req,res) => {
 //Actualizar prestamo
 const updatePrestamo = async (req, res) => {
     try {
-        const { id_prestamo } = req.params
-        const { devuelto, multa } = req.body
+        const { devuelto, multa, id_prestamo  } = req.body
 
-        const result = await pool.query('UPDATE prestamo SET devuelto = $1, multa = $2 WHERE id_prestamo = $3', [devuelto, multa, id_prestamo])
+        const result = await pool.query('UPDATE prestamo SET devuelto = $1, multa = $2, fecha_devolucion = now() WHERE id_prestamo = $3', [devuelto, multa, id_prestamo])
         if (result.rowCount === 0) {
             return res.status(404).json({
                 message: 'No encontrado'
